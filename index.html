@@ -1,0 +1,145 @@
+<html>
+<head>
+  <mete charset="UFT-8">
+  <title>すり抜け可否計算機</title>
+</head>
+
+<body>
+  <form name="inputform">
+    <label for="rangeform">射程: </label>
+    <input type="text" id="rangeform"><br/>
+
+    <label for="speedform">移動速度: </label>
+    <input type="text" id="speedform"><br/>
+
+    <label for="comboform">移動速度コンボ: </label>
+    <input type="text" id="comboform"><br/>
+
+    <select name="使用するもの" id="useform">
+      <option value="snya">スニャ</option>
+      <option value="nyankoho">にゃんこ砲</option>
+      <option value="kb">ノックバック</option>
+      <option value="tobasi">ふっとばし</option>
+      <option value="snyaho">スニャと砲</option>
+      <option value="snyakb">スニャとノックバック</option>
+      <option value="hokb">砲とノックバック</option>
+      <option value="tobasisnya">ふっとばしとスニャ</option>
+      <option value="tobasiho">ふっとばしと砲</option>
+      <option value="tobasikb">ふっとばしとノックバック</option>
+    </select>
+
+    <button id="button">計算</button>
+  </form>
+
+  <lavel for="kahisairyoform">可否最良: </label>
+  <input type="text" id="kahisairyoform">
+
+  <label for="kahisaiakuform">最悪: </label>
+  <input type="text" id="kahisaiakuform"><br/>
+
+  <label for="gosasairyoform">許容誤差最良: </label>
+  <input type="text" id="gosasairyoform">
+
+  <label for="gosasaiakuform">最悪: </label>
+  <input type="text" id="gosasaiakuform">
+</body>
+
+<script>
+
+//ボタンの要素を取得
+var button = document.getElementById("button");
+
+//ボタンをクリックした時の処理
+button.addEventListener("click", function(e){
+
+  e.preventDefault();
+
+  //セレクトフォームの値を取得
+  var catches = document.getElementById("useform");
+
+  //選択状態の項目の値を取得
+  var allcatches =catches.options;
+
+  for  ( var strresult="", i=0, l=allcatches.length; l>i; i++ ) {
+    if ( allcatches[i].selected ) {
+      strresult += allcatches[i].value + "";
+    }
+  }
+
+  //入力フォームの値を取得
+  var rangeform = document.getElementById("rangeform").value;
+  var speedform = document.getElementById("speedform").value;
+  var comboform = document.getElementById("comboform").value;
+
+  //計算
+  if(strresult==="snya"){
+    frame = 12
+    distance = 55
+  } else if(strresult==="snya"){
+    frame = 12
+    distance = 55
+  } else if(strresult==="kb"){
+    frame = 23
+    distance = 345
+  } else if(strresult==="tobasi"){
+    frame = 12
+    distance = 215
+  } else if(strresult==="snyaho"){
+    frame = 23
+    distance = 110
+  } else if(strresult==="snyakb"){
+    frame = 34
+    distance = 400
+  } else if(strresult==="hokb"){
+    frame = 34
+    distance = 400
+  } else if(strresult==="tobasisnya"){
+    frame = 23
+    distance = 270
+  } else if(strresult==="tobasiho"){
+    frame = 23
+    distance = 270
+  } else if(strresult==="tobasikb"){
+    frame = 34
+    distance = 560
+  } else var kahisairyoresult = "入力漏れです"
+
+  //計算式
+  var sumsairyo = parseInt(rangeform, 10)+0.25-frame*((parseInt(speedform, 10)/2*(((parseInt(comboform, 10)+100)/100))))+distance
+
+  if(sumsairyo <= -320){
+    kahisairyoresult = "〇"
+  } else{
+    kahisairyoresult = "×"
+  }
+
+  var sumsaiaku = parseInt(rangeform ,10)+((parseInt(speedform, 10)/2*(((parseInt(comboform, 10)+100)/100))))-frame*((parseInt(speedform, 10)/2*(((parseInt(comboform, 10)+100)/100))))+distance
+
+  if(sumsaiaku <= -320){
+    kahisaiakuresult = "〇"
+  } else{
+    kahisaiakuresult = "×"
+  }
+
+  var sumgosasairyo = Math.floor((-(sumsairyo) -320)/((parseInt(speedform, 10)/2*(((parseInt(comboform, 10)+100)/100)))))
+
+  var sumgosasaiaku = Math.floor((-(sumsaiaku) -320)/((parseInt(speedform, 10)/2*(((parseInt(comboform, 10)+100)/100)))))
+
+  //計算の結果を入力フォームに表示
+  var kahisairyoform = document.getElementById("kahisairyoform");
+  kahisairyoform.value = kahisairyoresult;
+
+  var kahisaiakuform = document.getElementById("kahisaiakuform");
+  kahisaiakuform.value = kahisaiakuresult;
+
+  var gosasairyoform = document.getElementById("gosasairyoform");
+  gosasairyoform.value = sumgosasairyo;
+
+  var gosasaiakuform = document.getElementById("gosasaiakuform");
+  gosasaiakuform.value = sumgosasaiaku;
+});
+
+
+</script>
+
+</html>
